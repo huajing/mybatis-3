@@ -42,11 +42,13 @@ public class MapperRegistry {
 
   @SuppressWarnings("unchecked")
   public <T> T getMapper(Class<T> type, SqlSession sqlSession) {
+    //通过mapper的接口类型查询代理工厂
     final MapperProxyFactory<T> mapperProxyFactory = (MapperProxyFactory<T>) knownMappers.get(type);
-    if (mapperProxyFactory == null) {
+    if (mapperProxyFactory == null) {//mapper代理工厂不存在
       throw new BindingException("Type " + type + " is not known to the MapperRegistry.");
     }
     try {
+      //代理工厂返回代理对象
       return mapperProxyFactory.newInstance(sqlSession);
     } catch (Exception e) {
       throw new BindingException("Error getting mapper instance. Cause: " + e, e);
@@ -57,6 +59,11 @@ public class MapperRegistry {
     return knownMappers.containsKey(type);
   }
 
+  /**
+   * 添加mapper接口到配置中
+   * @param type
+   * @param <T>
+   */
   public <T> void addMapper(Class<T> type) {
     if (type.isInterface()) {
       if (hasMapper(type)) {
@@ -91,7 +98,7 @@ public class MapperRegistry {
 
   /**
    * Adds the mappers.
-   *
+   * 通过包名查找所有mapper接口，并添加到配置中
    * @param packageName
    *          the package name
    * @param superType
