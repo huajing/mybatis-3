@@ -35,6 +35,7 @@ import org.apache.ibatis.transaction.Transaction;
 
 /**
  * @author Clinton Begin
+ * 执行器ReuseExecutor
  */
 public class ReuseExecutor extends BaseExecutor {
 
